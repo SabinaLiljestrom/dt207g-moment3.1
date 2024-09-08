@@ -74,6 +74,19 @@ app.post("/workexperience", async (req, res) => {
     }
 });
 
+app.delete("/workexperience/:id", async (req, res) => {
+    try {
+        let result = await Workexperience.findByIdAndDelete(req.params.id);
+        if (!result) {
+            return res.status(404).json({ message: "Ingen arbetserfarenhet hittades med det ID:t" });
+        }
+        return res.json({ message: "Arbetserfarenhet borttagen", data: result });
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+});
+
+
 app.listen(port, ()=>{
     console.log("server is running on port:" + port);
 });
