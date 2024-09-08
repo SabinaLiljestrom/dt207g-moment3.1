@@ -25,27 +25,27 @@ mongoose.connect("mongodb://localhost:27017/workexperience").then(()=>{
 const WorkexperienceSchema = new mongoose.Schema({
     companyname: {
         type: String,
-        required: true,
+        required: [true, "Du måste ange företagsnamn"],
     },
     jobtitle:{
         type: String,
-        required: true,
+        required: [true, "Du måste ange arbetsroll"],
     },
     location: {
         type: String,
-        required: true,
+        required: [true, "Du måste ange plats"],
     },
     startdate:{
         type: String,
-        required: true,
+        required: [true, "Startdatum saknas"],
     },
     enddate:{
         type: String,
-        required: true,
+        required: [true, "Slutdatum saknas"],
     },
     description: {
         type: String,
-        required: true,
+        required: [true, "beskrivning saknas"],
     }
 });
 
@@ -64,6 +64,15 @@ app.get("/workexperience", async (req, res) =>{
         return res.status(500).json(error);
     }
 })
+
+app.post("/workexperience", async (req, res) => {
+    try {
+        let result = await Workexperience.create(req.body);
+        return res.json(result);
+    } catch ( error) {
+        return res.status(400).json(error);
+    }
+});
 
 app.listen(port, ()=>{
     console.log("server is running on port:" + port);
