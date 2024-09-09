@@ -41,7 +41,7 @@ const WorkexperienceSchema = new mongoose.Schema({
     },
     enddate:{
         type: String,
-        required: [true, "Slutdatum saknas"],
+        required: [false, ],
     },
     description: {
         type: String,
