@@ -69,11 +69,17 @@ app.post("/workexperience", async (req, res) => {
     try {
         let result = await Workexperience.create(req.body);
         return res.json(result);
-    } catch ( error) {
-        return res.status(400).json(error);
+    } catch (error) {
+        if (error.name === 'ValidationError') {
+            const errors = Object.keys(error.errors).map(key => ({
+                msg: error.errors[key].message
+            }));
+            return res.status(400).json({ errors });
+        } else {
+            return res.status(500).json(error);
+        }
     }
 });
-
 app.delete("/workexperience/:id", async (req, res) => {
     try {
         let result = await Workexperience.findByIdAndDelete(req.params.id);
